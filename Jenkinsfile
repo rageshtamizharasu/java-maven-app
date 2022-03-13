@@ -1,14 +1,20 @@
+def gv
 pipeline{
     agent any
     tools{
         maven 'Maven'
     }
     stages{
-        stage("Building jar file"){
+        stage("init"){
             steps{
-                echo "Building the jar file application"
-                sh 'mvn package'
+                script{
+                    gv = load "script.groovy"
+                }
             }
+        }
+        }
+        stage("Building jar file"){
+            gv.buildJar()
         }
         stage("Building Docker image"){
             steps{
@@ -17,6 +23,7 @@ pipeline{
                  sh 'docker build -t ragesh2u/my-repo:jvm-2.0  .'
                  sh "echo $PASS | docker login -u $USER --password-stdin"
                  sh 'docker push ragesh2u/my-repo:jvm-2.0'
+                 //* if docker fail make sure to change the permission chmod 777 /var/run/docker.sock
                 }
             }
         }   
