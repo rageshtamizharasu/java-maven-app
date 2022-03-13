@@ -16,7 +16,7 @@ pipeline{
                  withCredentials([usernamePassword(credentialsId: 'dDockerHub', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
                  sh 'docker build -t ragesh2u/my-repo:jvm-2.0 .'
                  sh "echo $PASS | docker login -u $USER --password-stdin"
-                 sh 'docker push ragesh2u/my-repo:jvm-2.0
+                 sh 'docker push ragesh2u/my-repo:jvm-2.0'
     }
             }
     }
