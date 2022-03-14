@@ -1,0 +1,9 @@
+pipeline{
+    agent any
+    stages{
+        stage("Testing Multibranch"){
+            steps{
+                echo "Testing the Multibranch pipeline"
+                
+            }
+        }
