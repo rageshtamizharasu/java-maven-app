@@ -1,9 +1,21 @@
 pipeline{
     agent any
     stages{
-        stage("Testing Multibranch"){
+        stage('Testing'){
             steps{
-                echo "Testing the Multibranch pipeline"
+                script{
+                    echo "Testing the application...."
+                    echo "Executing pipeline for branch $BRANCH_NAME"
+                }
                 
             }
         }
+        stage('build'){
+            when {
+                expression {
+                    BRANCH_NAME == 'main'
+                }
+            }
+        }
+    }
+}
