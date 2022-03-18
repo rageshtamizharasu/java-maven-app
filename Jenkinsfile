@@ -1,3 +1,4 @@
+@library('jenkins-shared-library')
 def gv
 pipeline{
     agent any
@@ -11,11 +12,12 @@ pipeline{
                     gv = load "script.groovy"
                 }
             }
-        }       
+        }
+       
         stage("Building jar file"){
             steps{
                 script{
-                    gv.buildJar()
+                    buildJar()
                 }
             }
            
