@@ -13,8 +13,7 @@ pipeline{
                     gv = load "script.groovy"
                 }
             }
-        }
-       
+        }     
         stage("Building jar file"){
             steps{
                 script{
