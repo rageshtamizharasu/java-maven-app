@@ -5,13 +5,12 @@ pipeline{
     tools{
         maven 'Maven'
     }
-    stage("Building jar file"){
+    stages{
+        stage("building application maven"){
             steps{
                 script{
                     buildJar()
                 }
             }
-           
         }
     }
-}
