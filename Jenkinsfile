@@ -1,22 +1,22 @@
 #!/usr/bin/env groovy
-pipeline{
+pipeline {
     ageny any 
     tools {
         maven 'Maven'
     }
-    stages{
-        stage('increment version'){
+    stages {
+        stage('increment version') {
             steps{
                 script{
-                    echo 'increment the appication'
+                    echo "increment the appication"
                     sh 'mvn build-helper:parse-version:set -Dnewversion=\\\${ParsedVersion.majorVersion}.\\\${ParsedVersion.minorVersion}.\\\${ParsedVersion.NextIncrementVersion} version:commit'
                 }
             }
         }
-        stage('build Docker image'){
+        stage('build Docker image') {
             steps{
                 script{
-                    echo " Building the Docker image & Pushing into DockerHub"
+                    echo "Building the Docker image & Pushing into DockerHub"
                      withCredentials([usernamePassword(credentialsId: 'DockerHub', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
                      sh 'docker build -t ragesh2u/my-repo:jvm-2.0  .'
                      sh "echo $PASS | docker login -u $USER --password-stdin"
@@ -26,10 +26,10 @@ pipeline{
                 }
             }
         }
-        stage('deploy the Ec2'){
+        stage('deploy the Ec2') {
             steps{
                 script{
-                    echo 'deployin the application'
+                    echo "deployin the application"
                 }
             }
         }
