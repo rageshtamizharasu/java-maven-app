@@ -9,7 +9,12 @@ pipeline {
             steps{
                 script{
                     echo "increment the appication"
-                    sh 'mvn build-helper:parse-version:set -Dnewversion=\\\${ParsedVersion.majorVersion}.\\\${ParsedVersion.minorVersion}.\\\${ParsedVersion.NextIncrementVersion} version:commit'
+                    sh 'mvn build-helper:parse-version:set \
+                        -Dnewversion=\\\${parsedVersion.majorVersion}.\\\${parsedVersion.minorVersion}.\\\${parsedVersion.nextIncrementalVersion} \
+                        version:commit'
+                   def matcher = readFile('pom.xml') =~ '<version>(.+)</version>'
+                   def version = matcher[0][1]
+                   env.IMAGE_NAME = "$version-$BUILD_NUMBER"
                 }
             }
         }
@@ -25,9 +30,9 @@ pipeline {
                 script{
                     echo "Building the Docker image & Pushing into DockerHub"
                      withCredentials([usernamePassword(credentialsId: 'DockerHub', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
-                     sh 'docker build -t ragesh2u/my-repo:jvm-2.0  .'
+                     sh "docker build -t ragesh2u/my-repo:$IMAGE_NAME ."
                      sh "echo $PASS | docker login -u $USER --password-stdin"
-                     sh 'docker push ragesh2u/my-repo:jvm-2.0'
+                     sh "docker push ragesh2u/my-repo:$IMAGE_NAME"
                       //* if docker fail /change the permission chmod 777 /var/run/docker.sock inside jenkins container using root -u 0
                     }
                 }
