@@ -1,6 +1,6 @@
 #!/usr/bin/env groovy
 pipeline {
-    ageny any 
+    agent any 
     tools {
         maven 'Maven'
     }
