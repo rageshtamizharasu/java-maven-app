@@ -1,8 +1,8 @@
 #!/usr/bin/env groovy
 pipeline {
-    agent {
-        docker {
-            image "maven:3."
+    agent any 
+        tools{
+            maven 'Maven'
         }
     }
     stages {
@@ -46,12 +46,6 @@ pipeline {
                 }
             }
         }
-        post {
-        failure {
-        mail to: 'rageshkhanna55@gmail.com',
-             subject: "Failed Pipeline: ${currentBuild.fullDisplayName}",
-             body: "Something is wrong with ${env.BUILD_URL}"
-    }
-}
+
     }
 }
