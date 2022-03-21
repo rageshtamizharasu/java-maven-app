@@ -1,15 +1,33 @@
 #!/usr/bin/env groovy
-@Library('my-shared-library') _
-pipeline {
-    agent any
-    tools{
+pipeline{
+    ageny any 
+    tools {
         maven 'Maven'
     }
     stages{
-        stage("building application maven"){
+        stage('increment version'){
             steps{
                 script{
-                    buildJar()
+                    echo 'increment the appication'
+                    sh 'mvn build-helper:parse-version:set -Dnewversion=\\\${ParsedVersion.majorVersion}.\\\${ParsedVersion.minorVersion}.\\\${ParsedVersion.NextIncrementVersion} version:commit'
+                }
+            }
+        }
+        stage('build Docker image'){
+            steps{
+                script{
+                    echo " Building the Docker image & Pushing into DockerHub"
+                    withCredentials([usernamePassword(credentialsId: 'DockerHub', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
+                    sh 'docker build -t ragesh2u/my-repo:jvm-2.0  .'
+                    sh "echo $PASS | docker login -u $USER --password-stdin"
+                    sh 'docker push ragesh2u/my-repo:jvm-2.0'
+                }
+            }
+        }
+        stage('deploy the Ec2'){
+            steps{
+                script{
+                    echo 'deployin the application'
                 }
             }
         }
