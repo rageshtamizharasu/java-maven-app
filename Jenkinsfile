@@ -34,18 +34,6 @@ pipeline {
                 }
             }
         }
-        post {
-        success {
-            mail to: 'rageshtamizharasu@gmail.com',
-                 subject: 'Build Succeeded!',
-                 body: 'The build has succeeded.'
-        }
-        failure {
-            mail to: 'rageshtamizharasu@gmail.com',
-                 subject: 'Build Failed!',
-                 body: 'The build has failed.'
-        }
-
-    }
+        
 }
 }
